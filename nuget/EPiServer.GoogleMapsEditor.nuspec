@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>EPiServer.GoogleMapsEditor</id>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
     <authors>Ted &amp; Gustaf AB</authors>
     <owners>Ted &amp; Gustaf AB</owners>
     <licenseUrl>https://github.com/tedgustaf/episerver-google-maps-editor/wiki/License</licenseUrl>
