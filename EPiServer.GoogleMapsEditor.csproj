@@ -165,24 +165,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="nuget\content\module.config.transform" />
-    <None Include="nuget\EPiServer.GoogleMapsEditor.nuspec" />
+    <None Include="module.config.transform" />
+    <None Include="EPiServer.GoogleMapsEditor.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="nuget\content\ClientResources\googlemaps\async.js" />
-    <Content Include="nuget\content\ClientResources\googlemaps\Editor.js" />
-    <Content Include="nuget\content\ClientResources\googlemaps\nls\Labels.js" />
-    <Content Include="nuget\content\ClientResources\googlemaps\nls\sv\Labels.js" />
-    <Content Include="nuget\content\ClientResources\googlemaps\WidgetTemplate.html" />
+    <Content Include="ClientResources\googlemaps\async.js" />
+    <Content Include="ClientResources\googlemaps\Editor.js" />
+    <Content Include="ClientResources\googlemaps\nls\Labels.js" />
+    <Content Include="ClientResources\googlemaps\nls\sv\Labels.js" />
+    <Content Include="ClientResources\googlemaps\WidgetTemplate.html" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="nuget\lib\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>REM copy "$(TargetPath)" "$(ProjectDir)nuget\lib\net40" /Y
-nuget pack "$(ProjectDir)nuget\EPiServer.GoogleMapsEditor.nuspec" -OutputDirectory "$(ProjectDir)nuget"</PostBuildEvent>
+    <PostBuildEvent>nuget pack "$(ProjectDir)EPiServer.GoogleMapsEditor.csproj" -OutputDirectory "$(ProjectDir)nuget"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
