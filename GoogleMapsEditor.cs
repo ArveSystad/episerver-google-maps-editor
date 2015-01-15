@@ -2,11 +2,9 @@
 
 namespace EPiServer.GoogleMapsEditor
 {
-    [EditorDescriptorRegistration(TargetType = typeof(string), UIHint = UIHint)]
+    [EditorDescriptorRegistration(TargetType = typeof(MapPoint), EditorDescriptorBehavior = EditorDescriptorBehavior.Default)]
     public class GoogleMapsEditor : EditorDescriptor
     {
-        public const string UIHint = "CoordinatesEditorDescriptor";
-
         public GoogleMapsEditor()
         {
             ClientEditingClass = "tedgustaf.googlemaps.Editor";
