@@ -51,6 +51,7 @@ function (
 
     localized
 ) {
+
     return declare([_Widget, _TemplatedMixin, _WidgetsInTemplateMixin, _ValueRequiredMixin], {
        
         // The Google Maps object of this widget instance
@@ -76,7 +77,6 @@ function (
 
         // Dojo event fired after all properties of a widget are defined, but before the fragment itself is added to the main HTML document
         postCreate: function () {
-
             // Call base implementation of postCreate, passing on any parameters
             this.inherited(arguments);
 
@@ -85,14 +85,8 @@ function (
 
             // Set coordinate textboxes to current property value
             if (this.hasCoordinates()) {
-                if (typeof this.value === "string") {
-                    var coordinates = this.value.split(',');
-                    this.longitudeTextbox.set('value', coordinates[0]);
-                    this.latitudeTextbox.set('value', coordinates[1]);
-                } else if (typeof this.value === "object") {
-                    this.longitudeTextbox.set('value', this.value.longitude);
-                    this.latitudeTextbox.set('value', this.value.latitude);
-                }
+                this.latitudeTextbox.set('value', this.value.latitude);
+                this.longitudeTextbox.set('value', this.value.longitude);                    
             }
 
             // When the editor switches tabs in the UI we trigger a map resize to ensure it aligns properly
@@ -140,57 +134,25 @@ function (
             // tags:
             //    protected, override
 
-            if (!this.value || this.value === '' || this.value == undefined || (typeof this.value === "object" && (isNaN(this.value.longitude) || isNaN(this.value.latitude)))) {
+            if (!this.value) {
                 return !this.required; // Making use of _ValueRequiredMixin to check if a property value is required
             }
-
-            if (typeof this.value === "string") {
-                var coordinates = this.value.split(',');
-
-                if (coordinates.length != 2) { // Valid value is longitude and latitude, separated by a comma
-                    return false;
-                }
-
-                for (var i = 0; i < 1; i++) {
-                    if (isNaN(coordinates[0]) || coordinates[0].toString().indexOf('.') == -1) {
-                        return false; // The coordinate is not a float number
-                    }
-                }
-
-                return true;
-            } else if (typeof this.value === "object") { // Complex type, ensure coordinates are positive numbers
-                var isValidCoordinatesObject = this.value.longitude !== undefined &&
-                                               this.value.latitude !== undefined &&
-                                               !isNaN(this.value.longitude) &&
-                                               !isNaN(this.value.latitude) &&
-                                               this.value.longitude > 0 &&
-                                               this.value.latitude > 0;
-
-                return isValidCoordinatesObject;
-            }
+            
+            return this.hasCoordinates();
 
             return false;
         },
 
         // Checks if the current value is valid coordinates
         hasCoordinates: function () {
+            var returnValue = this.value &&
+                              this.value.longitude &&
+                              this.value.latitude &&
+                              !isNaN(this.value.longitude) &&
+                              !isNaN(this.value.latitude);
 
-            if (!this.isValid() || !this.value || this.valueOf === '' || (typeof this.value === "object" && (isNaN(this.value.longitude) || isNaN(this.value.latitude)))) {
-                return false;
-            }
-
-            if (typeof this.value === "string") {
-                return this.value.split(',').length == 2; // String value with comma-separated coordinates
-            } else if (typeof this.value === "object") { // Complex type with separate properties for latitude and longitude
-                return this.value.longitude !== undefined &&
-                       this.value.latitude !== undefined &&
-                       !isNaN(this.value.longitude) &&
-                       !isNaN(this.value.latitude) &&
-                       this.value.longitude > 0 &&
-                       this.value.latitude > 0;
-            }
-
-            return false;
+            console.log("hasCoordinates: " + returnValue);
+            return returnValue;
         },
 
         // Setter for value property (invoked by EPiServer on load)
@@ -205,7 +167,6 @@ function (
 
         // Update widget value when a coordinate is changed
         _onCoordinateChanged: function () {
-
             var longitude = this.longitudeTextbox.get('value');
             var latitude = this.latitudeTextbox.get('value');
 
@@ -213,14 +174,12 @@ function (
                 return;
             }
 
-            // Update the widget (i.e. property) value
-            if (this.value != null && typeof this.value === "object") { // Property is complex type, such as a local block
-                var coordinatesObject = { latitude: parseFloat(latitude), longitude: parseFloat(longitude) };
-                this._setValue(coordinatesObject);
-            } else { // Assume string value type
-                var coordinatesAsString = latitude + "," + longitude;
-                this._setValue(coordinatesAsString);
-            }
+            var coordinatesObject = {
+                latitude: parseFloat(latitude),
+                longitude: parseFloat(longitude)
+            };
+
+            this._setValue(coordinatesObject);            
         },
 
         // Used to set the widget (property) value
@@ -245,7 +204,7 @@ function (
             
             // Clear coordinate checkboxes
             this.longitudeTextbox.set('value', '', false); // Change value without triggering onChange event as we will explicitly null the property value
-            this.latitudeTextbox.set('value', '');
+            this.latitudeTextbox.set('value',  '');
 
             // Remove the map marker, if any
             if (this.marker) {
@@ -259,18 +218,11 @@ function (
 
         // Setup the Google Maps canvas
         initializeMap: function () {
-
             var defaultCoordinates = new google.maps.LatLng(59.336, 18.063);
 
             // Center on current coordinates (i.e. property value), or a default location if no coordinates are set
             if (this.hasCoordinates()) {
-                if (typeof this.value === "string") {
-                    var coordinates = this.value.split(',');
-                    defaultCoordinates = new google.maps.LatLng(parseFloat(coordinates[0]), parseFloat(coordinates[1]));
-                }
-                else if (typeof this.value === "object") {
-                    defaultCoordinates = new google.maps.LatLng(this.value.latitude, this.value.longitude);
-                }
+                defaultCoordinates = new google.maps.LatLng(this.value.latitude, this.value.longitude);
             }
 
             // Render the map, but disable interaction if property is readonly
@@ -298,7 +250,6 @@ function (
                 var mapType = new google.maps.StyledMapType(grayStyle, { name: "Grayscale" });
 
                 this.map.mapTypes.set('disabled', mapType);
-
                 this.map.setMapTypeId('disabled');
             }
 
