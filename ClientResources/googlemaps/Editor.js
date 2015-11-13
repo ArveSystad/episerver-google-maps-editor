@@ -151,7 +151,6 @@ function (
                               !isNaN(this.value.longitude) &&
                               !isNaN(this.value.latitude);
 
-            console.log("hasCoordinates: " + returnValue);
             return returnValue;
         },
 

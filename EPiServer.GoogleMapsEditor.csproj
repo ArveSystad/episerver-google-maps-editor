@@ -166,6 +166,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="module.config" />
     <None Include="module.config.transform" />
     <None Include="EPiServer.GoogleMapsEditor.nuspec" />
     <None Include="packages.config" />
