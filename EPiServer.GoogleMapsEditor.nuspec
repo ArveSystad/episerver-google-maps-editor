@@ -14,7 +14,7 @@
     <copyright>Copyright 2014</copyright>
     <tags>EPiServer UI</tags>
     <dependencies>
-      <dependency id="EPiServer.CMS.Core" version="7.18.0" />
+      <dependency id="EPiServer.CMS.Core" version="8.0.0" />
     </dependencies>
   </metadata>
 </package>
