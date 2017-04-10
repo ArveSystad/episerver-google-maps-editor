@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>EPiServer.GoogleMapsEditor</id>
-    <version>1.2.0</version>
+    <version>1.3.0</version>
     <authors>Ted &amp; Gustaf AB, Arve Systad</authors>
     <owners>Ted &amp; Gustaf AB</owners>
     <licenseUrl>https://github.com/tedgustaf/episerver-google-maps-editor/wiki/License</licenseUrl>
@@ -14,7 +14,8 @@
     <copyright>Copyright 2014</copyright>
     <tags>EPiServer UI</tags>
     <dependencies>
-      <dependency id="EPiServer.CMS.Core" version="8.0.0" />
+      <dependency id="EPiServer.CMS.Core" version="[10.0.1,11)" />
+      <dependency id="EPiServer.CMS.UI.Core" version="[10.0.2,11)" />
     </dependencies>
   </metadata>
 </package>

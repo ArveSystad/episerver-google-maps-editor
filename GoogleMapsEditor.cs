@@ -7,7 +7,7 @@ namespace EPiServer.GoogleMapsEditor
     {
         public GoogleMapsEditor()
         {
-            ClientEditingClass = "tedgustaf.googlemaps.Editor";
+            ClientEditingClass = "tedgustaf/googlemaps/Editor";
         }
     }
 }
